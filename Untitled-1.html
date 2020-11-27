@@ -1,0 +1,119 @@
+<footer class="w-100">
+    <div class="footer">
+        
+
+<div class="row mt-3 mb-3">
+<div class="col-md-6">
+<h5>
+    THÔNG TIN CHUNG
+    <span class="line-remove" style="width: 78px; "></span>
+</h5>
+<h4 class="mt-2 pt-2 com-name">XƯỞNG MỘC HOÀNG HOAN</h4>
+<p class="com-phone"><i class="fas fa-phone-alt"></i> <a href="tel:0985367024" title="0985.367.024">0985.367.024</a> </p>
+<p class="com-email"><i class="fas fa-envelope"></i><a href="mailto:noithatlanhoan@gmail.com" title="noithatlanhoan@gmail.com">noithatlanhoan@gmail.com</a> </p>
+<address class="com-address"><i class="fas fa-map-marker-alt"></i>Hiệp Thuận, Phúc Thọ, Hà Nội </address>
+
+</div>
+<div class="col-md-3">
+<h5>
+    VỀ CHÚNG TÔI
+    <span class="line-remove" style="width: 78px; "></span>
+</h5>
+<ul>
+    <li><a href="/gioi-thieu" title="Giới thiệu">Giới thiệu</a></li>
+    <li><a href="/san-pham" title="Sản phẩm">Sản phẩm</a></li>
+    <li><a href="/tin-tuc-ruou-vang" title="Tin tức">Tin tức</a></li>
+    <li><a href="/doi-tac" title="Đối tác">Đối tác</a></li>
+    <li><a href="/lien-he" title="Liên hệ">Liên hệ</a></li>
+</ul>
+</div>
+<div class="col-md-3">
+<h5>
+    KẾT NỐI VỚI CHÚNG TÔI
+    <span class="line-remove" style="width: 78px; "></span>
+</h5>
+<div class="mt-4 social-icon"> <a href="https://www.facebook.com/X%C6%B0%E1%BB%9Fng-M%E1%BB%99c-Ho%C3%A0ng-Hoan-110459754092742/" target="_blank">
+        <i class="fab fa-facebook-square"></i>
+    </a>
+    <a href="null" target="_blank"><i class="fab fa-youtube-square"></i></a>
+    <a href="mailto:noithatlanhoan@gmail.com" target="_blank">
+        <i class="far fa-envelope"></i>
+    </a></div>
+</div>
+</div>
+<script>
+var company_info = new Object();
+var phone = [];
+var address = [];
+var email = [];
+$.ajax({
+url: '/home/InforCompany',
+type: 'GET',
+dataType: 'json',
+contentType: 'application/json',
+data: {},
+beforeSend: function () {
+},
+success: function (res) {
+    company_info = res;
+    $('.com-name').text(company_info.NAME)
+    let str_phones = company_info.PHONE;
+    let phones = str_phones.split(";");
+    
+    let strPhone = `<i class="fas fa-phone-alt"></i>`;
+    $.each(phones, function (index, value) {
+        let val = convertPhone(value);
+        phone.push(convertPhone(value));
+        strPhone += ` <a href="tel:${val}" title="${value}">${value}</a> | `;
+    });
+    strPhone = strPhone.substr(0, strPhone.length - 2);
+    $('.com-phone').html(strPhone);
+
+    let email = company_info.EMAIL;
+    let emails = email.split(";");
+
+    let strEmail = `<i class="fas fa-envelope"></i>`;
+    $.each(emails, function (index, value) {
+        strEmail += `<a href="mailto:${value}" title="${value}">${value}</a> | `;
+    });
+    strEmail = strEmail.substr(0, strEmail.length - 2);
+    $('.com-email').html(strEmail);
+
+    let str_address = company_info.ADDRESS.split(";");
+    let strAdd = `<i class="fas fa-map-marker-alt"></i>`;
+    $.each(str_address, function (index, value) {
+        strAdd += `${value} <br/>`;
+    })
+    strAdd = strAdd.substr(0, strAdd.length - 5);
+    $('.com-address').html(strAdd);
+
+    let socials = ` <a href="${company_info.FACEBOOK}" target="_blank">
+        <i class="fab fa-facebook-square"></i>
+    </a>
+    <a href="${company_info.YOUTUBE}" target="_blank"><i class="fab fa-youtube-square"></i></i></a>
+    <a href="mailto:${company_info.EMAIL}" target="_blank">
+        <i class="far fa-envelope"></i>
+    </a>`;
+    $('.social-icon').html(socials);
+
+    $('.main .logo img').attr('src', company_info.LOGO);
+},
+error: function () {
+
+},
+complete: function () {
+
+}
+});
+function convertPhone(input) {
+let out = input;
+out = input.trim();
+out = out.replace(/\./g, "");
+out = out.replace(/\,/g, "");
+out = out.replace(/[ ]/g, "");
+return out;
+}
+</script>
+
+    </div>
+</footer>
